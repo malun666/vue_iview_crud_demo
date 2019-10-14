@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="btn-group">
-      <Button class="btn" type="primary" @click="handleDelete">删除</Button>
+      <Button class="btn" type="error" @click="handleDelete">删除</Button>
+      <Button class="btn" type="primary" @click="handleAdd">添加</Button>
       <Input
         style="display: inline-table;width: 300px;margin: 0 5px;"
         v-model="params.q"
@@ -25,7 +26,7 @@
           title="你确定要删除此数据吗?"
           @on-ok="deleteUser(row.id)"
         >
-          <Button type="primary" size="small" style="margin-right: 5px">
+          <Button type="error" size="small" style="margin-right: 5px">
             删除
           </Button>
         </Poptip>
@@ -40,15 +41,18 @@
       :current="params._page"
       :page-size="params._limit"
     ></Page>
+    <AddUser @add="loadData" v-model="showAddDialog"></AddUser>
   </div>
 </template>
 
 <script>
 import service from "../service";
+import AddUser from "../components/User/AddUser";
 
 export default {
   data() {
     return {
+      showAddDialog: false,
       columns: [
         {
           type: "selection",
@@ -81,7 +85,9 @@ export default {
       params: {
         _limit: 6,
         _page: 1,
-        q: ""
+        q: "",
+        _sort: "id",
+        _order: "desc"
       },
       total: 0,
       data: [
@@ -102,6 +108,9 @@ export default {
     this.loadData();
   },
   methods: {
+    handleAdd() {
+      this.showAddDialog = true;
+    },
     changeSelect(selection) {
       // console.log(selection);
       this.selectRows = selection;
@@ -151,7 +160,9 @@ export default {
       });
     }
   },
-  components: {}
+  components: {
+    AddUser
+  }
 };
 </script>
 

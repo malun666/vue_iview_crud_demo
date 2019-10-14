@@ -9,5 +9,17 @@ export function deleteUser(idArr) {
 
 export default {
   loadUser,
-  deleteUser
+  deleteUser,
+  addUser(user) {
+    user = Object.assign(
+      {
+        id: Date.now(),
+        del: 0,
+        avatar: "",
+        isTeacher: true
+      },
+      user
+    );
+    return axios.post("/per/user", user);
+  }
 };
