@@ -23,11 +23,7 @@
         <Poptip
           confirm
           title="你确定要删除此数据吗?"
-          @on-ok="
-            () => {
-              deletUser(row.id);
-            }
-          "
+          @on-ok="deleteUser(row.id)"
         >
           <Button type="primary" size="small" style="margin-right: 5px">
             删除
@@ -111,16 +107,36 @@ export default {
       this.selectRows = selection;
     },
     handleDelete() {
+      if (this.selectRows.length <= 0) {
+        this.$Message.error({ content: "请先选择数据！" });
+        return;
+      }
       this.$Modal.confirm({
         title: "您确认要删除吗？",
         okText: "确认",
         onOk: () => {
-          console.log(this.selectRows);
+          this.submitDeleteUserArr(this.selectRows.map(item => item.id));
         }
       });
     },
-    deletUser(userId) {
+    submitDeleteUserArr(arr) {
+      service
+        .deleteUser(arr)
+        .then(() => {
+          this.$Message.info({ content: "删除成功！" });
+          this.selectRows = this.selectRows.filter(row => {
+            return arr.findIndex(userId => row.id === userId) < 0;
+          });
+          this.loadData();
+        })
+        .catch(err => {
+          console.log(err);
+          this.$Message.error({ content: "删除失败！" });
+        });
+    },
+    deleteUser(userId) {
       console.log(userId);
+      this.submitDeleteUserArr([userId]);
     },
     changePage(page) {
       // this.$Message.info({ content: page });

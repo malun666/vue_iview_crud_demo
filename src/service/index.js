@@ -3,4 +3,11 @@ export function loadUser(params) {
   return axios.get("/per/user", { params });
 }
 
-export default { loadUser };
+export function deleteUser(idArr) {
+  return Promise.all(idArr.map(id => axios.delete(`/per/user/${id}`)));
+}
+
+export default {
+  loadUser,
+  deleteUser
+};
