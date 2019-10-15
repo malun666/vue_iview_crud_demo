@@ -13,7 +13,7 @@ export default {
   addUser(user) {
     user = Object.assign(
       {
-        id: Date.now(),
+        // id: Date.now(),
         del: 0,
         avatar: "",
         isTeacher: true

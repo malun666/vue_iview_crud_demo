@@ -30,6 +30,9 @@
             删除
           </Button>
         </Poptip>
+        <Button size="small" @click="editUserRow(row)" type="primary"
+          >修改
+        </Button>
       </template>
       <template slot-scope="{ row }" slot="url">
         <img class="imgt" :src="row.avatar" alt="" />
@@ -42,17 +45,25 @@
       :page-size="params._limit"
     ></Page>
     <AddUser @add="loadData" v-model="showAddDialog"></AddUser>
+    <EditUser
+      :editUser="editUser"
+      @edit="loadData"
+      v-model="showEditDialog"
+    ></EditUser>
   </div>
 </template>
 
 <script>
 import service from "../service";
 import AddUser from "../components/User/AddUser";
+import EditUser from "../components/User/EditUser";
 
 export default {
   data() {
     return {
       showAddDialog: false,
+      showEditDialog: false,
+      editUser: null,
       columns: [
         {
           type: "selection",
@@ -108,6 +119,10 @@ export default {
     this.loadData();
   },
   methods: {
+    editUserRow(row) {
+      this.editUser = row;
+      this.showEditDialog = true;
+    },
     handleAdd() {
       this.showAddDialog = true;
     },
@@ -161,7 +176,8 @@ export default {
     }
   },
   components: {
-    AddUser
+    AddUser,
+    EditUser
   }
 };
 </script>
