@@ -3,6 +3,7 @@
     <div class="btn-group">
       <Button class="btn" type="error" @click="handleDelete">删除</Button>
       <Button class="btn" type="primary" @click="handleAdd">添加</Button>
+      <Button class="btn" type="error" @click="handleSetRole">设置角色</Button>
       <Input
         style="display: inline-table;width: 300px;margin: 0 5px;"
         v-model="params.q"
@@ -50,6 +51,12 @@
       @edit="loadData"
       v-model="showEditDialog"
     ></EditUser>
+    <SetRole
+      :close="() => (this.showSetRoleDialog = false)"
+      :visible="showSetRoleDialog"
+      :user="setUserRole"
+    >
+    </SetRole>
   </div>
 </template>
 
@@ -57,13 +64,16 @@
 import service from "../service";
 import AddUser from "../components/User/AddUser";
 import EditUser from "../components/User/EditUser";
+import SetRole from "../components/User/SetRole";
 
 export default {
   data() {
     return {
+      showSetRoleDialog: false,
       showAddDialog: false,
       showEditDialog: false,
       editUser: null,
+      setUserRole: null,
       columns: [
         {
           type: "selection",
@@ -119,6 +129,18 @@ export default {
     this.loadData();
   },
   methods: {
+    handleSetRole() {
+      // 拿到所有选中的row
+      // console.log(this.selectRows);
+      if (this.selectRows.length !== 1) {
+        this.$Message.error({ content: "只能选中一" });
+        return;
+      }
+      console.log("222");
+      // 线上设置队徽狂
+      this.setUserRole = this.selectRows[0];
+      this.showSetRoleDialog = true;
+    },
     editUserRow(row) {
       this.editUser = row;
       this.showEditDialog = true;
@@ -177,7 +199,8 @@ export default {
   },
   components: {
     AddUser,
-    EditUser
+    EditUser,
+    SetRole
   }
 };
 </script>

@@ -8,6 +8,9 @@ module.exports = {
       },
       "/per": {
         target: "http://localhost:8888"
+      },
+      "/index": {
+        target: "http://localhost:8888"
       }
     }
   }

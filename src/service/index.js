@@ -21,5 +21,11 @@ export default {
       user
     );
     return axios.post("/per/user", user);
+  },
+  loadAllRole() {
+    return axios.get("/per/role");
+  },
+  loadUserRole(userId) {
+    return axios.get(`/per/user_role?userId=${userId}`);
   }
 };
