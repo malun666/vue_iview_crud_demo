@@ -27,5 +27,11 @@ export default {
   },
   loadUserRole(userId) {
     return axios.get(`/per/user_role?userId=${userId}`);
+  },
+  addUserRole(userRole) {
+    return axios.post("/per/user_role", userRole);
+  },
+  deleteUserRole(userRoleId) {
+    return axios.delete(`/per/user_role/${userRoleId}`);
   }
 };
